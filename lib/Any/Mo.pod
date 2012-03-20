@@ -1,0 +1,94 @@
+=head1 NAME
+
+Any::Mo - load Moose or Mouse or Mo
+
+=head1 SYNOPSIS
+
+ {
+   package Person;
+   use Any::Mo;
+   has name => (is => 'ro', isa => 'Str');
+ }
+ 
+ my $bob = Person->new(name => 'Bob');
+
+=head1 DESCRIPTION
+
+This module is quite like L<Any::Moose>, which will use either L<Moose>
+or L<Mouse> on demand, but adds L<Mo> to the mix.
+
+In particular, if Moose is available and has already been C<require>d,
+then it uses Moose. Otherwise, if Mouse is available and has already
+been C<require>d, then it uses that. If all else fails, it falls back
+to a copy of Mo which is inlined into Any::Mo as a DATA section. (You
+may set the PERL_ANY_MO environment variable to force a particular
+choice.)
+
+The inlined copy of Mo has the following extensions:
+
+=over
+
+=item * L<Mo::build>
+
+=item * L<Mo::builder>
+
+=item * L<Mo::coerce>
+
+=item * L<Mo::default>
+
+=item * L<Mo::is>
+
+=item * Mo::isa
+
+=item * L<Mo::required>
+
+=back
+
+Mo is minimal. It does not have all the features of Mouse or Moose. So
+if you use Any::Mo, you should take care that you're not counting on
+features of Mouse/Moose that Mo does not possess. This includes roles,
+method modifiers, metaclasses, automatic delegation and DEMOLISH. It
+is a good idea to run your entire test suite through three times, with
+PERL_ANY_MO set to "Mo", "Mouse" and "Moose", and check that it passes
+under all three. (At some point a Test::Any::Mo module may be written
+to help automate this.)
+
+Note that another difference between Mouse/Moose and Mo, is that the
+former two export L<Carp> C<confess> and L<Scalar::Util> C<blessed>
+into your namespace; Mo doesn't. To smooth over the difference, Any::Mo
+will always make sure these two functions are exported to your namespace.
+
+=head1 BUGS
+
+Please report any bugs to
+L<http://rt.cpan.org/Dist/Display.html?Queue=Any-Mo>.
+
+=head1 SEE ALSO
+
+L<Any::Moose>.
+
+L<Moose> and its imitators:
+L<M>,
+L<Mo>,
+L<Moo>,
+L<Mouse>,
+L<Reindeer>,
+L<Acme::Elk>.
+
+=head1 AUTHOR
+
+Toby Inkster E<lt>tobyink@cpan.orgE<gt>.
+
+=head1 COPYRIGHT AND LICENCE
+
+This software is copyright (c) 2012 by Toby Inkster.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
+
+=head1 DISCLAIMER OF WARRANTIES
+
+THIS PACKAGE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR IMPLIED
+WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
+MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+
