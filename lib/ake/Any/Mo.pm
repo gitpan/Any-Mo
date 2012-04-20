@@ -1,11 +1,15 @@
 package ake::Any::Mo;
 
 our $AUTHORITY = 'cpan:TOBYINK';
-our $VERSION   = '0.30';
+our $VERSION   = '0.31';
 
 use 5.008;
 use strict 'vars', 'subs';
 no warnings;
+
+q{ Meh...
+use warnings;
+} or exit(1);
 
 sub import
 {

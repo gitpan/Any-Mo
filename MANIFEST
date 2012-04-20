@@ -23,6 +23,7 @@ lib/ake/Any/Mo.pm
 lib/Any/Mo.pm
 lib/Any/Mo.pod
 LICENSE
+MAKE_DISTRIBUTION
 Makefile.PL
 MANIFEST			This list of files
 META.yml

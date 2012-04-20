@@ -15,3 +15,13 @@ dist:v_0-30
 	:file-release   <http://backpan.cpan.org/authors/id/T/TO/TOBYINK/Any-Mo-0.30.tar.gz> ;
 	rdfs:label      "Initial release" .
 
+dist:project :release dist:v_0-31 .
+dist:v_0-31
+	a               :Version ;
+	dc:issued       "2012-04-20"^^xsd:date ;
+	:revision       "0.31"^^xsd:string ;
+	:file-release   <http://backpan.cpan.org/authors/id/T/TO/TOBYINK/Any-Mo-0.31.tar.gz> ;
+	dcs:changeset [
+		dcs:versus dist:v_0-30 ;
+		dcs:item   [ rdfs:label "use Mo 0.31"; a dcs:Update ] ;
+		] .

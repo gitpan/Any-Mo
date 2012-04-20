@@ -24,7 +24,8 @@ to a copy of Mo which is inlined into Any::Mo as a DATA section. (You
 may set the PERL_ANY_MO environment variable to force a particular
 choice.)
 
-The inlined copy of Mo has the following extensions:
+The inlined copy of Mo is based on the copy in my github fork at
+L<https://github.com/tobyink/p5-mo> and has the following extensions:
 
 =over
 
@@ -32,7 +33,7 @@ The inlined copy of Mo has the following extensions:
 
 =item * L<Mo::builder>
 
-=item * L<Mo::coerce>
+=item * L<Mo::coerce> (will be dropped in a future version)
 
 =item * L<Mo::default>
 
@@ -57,6 +58,22 @@ Note that another difference between Mouse/Moose and Mo, is that the
 former two export L<Carp> C<confess> and L<Scalar::Util> C<blessed>
 into your namespace; Mo doesn't. To smooth over the difference, Any::Mo
 will always make sure these two functions are exported to your namespace.
+
+=head1 FAQ
+
+=head2 Why no Moo?
+
+A key requirement in "Any::Foobar" type modules is that it should be
+possible to use the various implementations fairly interchangably. If
+L<Moo> were added to Any::Mo, this would not be the case, as Moo's
+implementation of C<isa> is quite different to Moose and Mouse.
+
+(I'll probably drop Mo::coerce for similar reasons.)
+
+=head2 Why no Any::Mo::Role.
+
+L<Mo> doesn't have any role support. If you need roles, switch to
+L<Any::Moose> which comes bundled with an Any::Moose::Role module.
 
 =head1 BUGS
 
