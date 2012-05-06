@@ -1,3 +1,3 @@
 I use this:
 
-perl -Make::Any::Mo=,../p5-mo/lib,,,STD
+perl -Ilib -Make::Any::Mo=Any::Mo,../p5-mo/lib,,,STD > lib/Any/Mo.pm

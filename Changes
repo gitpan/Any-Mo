@@ -5,6 +5,13 @@ Created:      2012-03-03
 Home page:    <https://metacpan.org/release/Any-Mo>
 Bug tracker:  <http://rt.cpan.org/Dist/Display.html?Queue=Any-Mo>
 
+0.31_50  2012-05-06
+
+ - (Removal) Remove 'coerce' support as Mo's version is not compatible with
+   Moose and Mouse. It had been deprecated in Any::Mo 0.31.
+ - Make decision about which backend (Mo, Mouse, Moose) to use only once.
+   Like Any::Mouse does.
+
 0.31  2012-04-20
 
  - (Update) use Mo 0.31

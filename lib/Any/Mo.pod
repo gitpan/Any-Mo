@@ -33,8 +33,6 @@ L<https://github.com/tobyink/p5-mo> and has the following extensions:
 
 =item * L<Mo::builder>
 
-=item * L<Mo::coerce> (will be dropped in a future version)
-
 =item * L<Mo::default>
 
 =item * L<Mo::is>
@@ -68,12 +66,24 @@ possible to use the various implementations fairly interchangably. If
 L<Moo> were added to Any::Mo, this would not be the case, as Moo's
 implementation of C<isa> is quite different to Moose and Mouse.
 
-(I'll probably drop Mo::coerce for similar reasons.)
-
-=head2 Why no Any::Mo::Role.
+=head2 Why no Any::Mo::Role?
 
 L<Mo> doesn't have any role support. If you need roles, switch to
 L<Any::Moose> which comes bundled with an Any::Moose::Role module.
+
+=head2 I expected Moose but got Mouse. Why?
+
+In this situation:
+
+ use Foo::Bar;
+ BEGIN { $ENV{ANY_MO} = 'Moose' };
+ use Any::Mo;
+
+You'd expect Any::Mo to load up Moose, right? But, like Any::Moose,
+Any::Mo only makes the decision about which backend module to use
+once per process. If Foo::Bar uses Any::Mo, then that decision will
+have already been made, so setting the enviroment variable later on
+will have no effect.
 
 =head1 BUGS
 

@@ -25,3 +25,15 @@ dist:v_0-31
 		dcs:versus dist:v_0-30 ;
 		dcs:item   [ rdfs:label "use Mo 0.31"; a dcs:Update ] ;
 		] .
+
+dist:project :release dist:v_0-31_50 .
+dist:v_0-31_50
+	a               :Version ;
+	dc:issued       "2012-05-06"^^xsd:date ;
+	:revision       "0.31_50"^^xsd:string ;
+	:file-release   <http://backpan.cpan.org/authors/id/T/TO/TOBYINK/Any-Mo-0.31_50.tar.gz> ;
+	dcs:changeset [
+		dcs:versus dist:v_0-31 ;
+		dcs:item   [ rdfs:label "Remove 'coerce' support as Mo's version is not compatible with Moose and Mouse. It had been deprecated in Any::Mo 0.31."; a dcs:Removal ] ;
+		dcs:item   [ rdfs:label "Make decision about which backend (Mo, Mouse, Moose) to use only once. Like Any::Mouse does." ] ;
+		] .

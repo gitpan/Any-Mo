@@ -31,7 +31,7 @@ is_deeply(
 	
 is_deeply(
 	[ Class::ISA::super_path('Bar') ],
-	[ qw/Moose::Object/ ],
+	[ qw/Any::Mo::Mo::Object/ ],
 	'Bar inheritance',
 	);
 	

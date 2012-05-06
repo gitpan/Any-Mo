@@ -1,7 +1,7 @@
 package ake::Any::Mo;
 
 our $AUTHORITY = 'cpan:TOBYINK';
-our $VERSION   = '0.31';
+our $VERSION   = '0.31_50';
 
 use 5.008;
 use strict 'vars', 'subs';
@@ -30,14 +30,20 @@ sub new
 {
 	my ($class, %args) = @_;
 	
+	if ($args{mo_lib})
+	{
+		push @INC, $args{mo_lib};
+		unshift @INC, $args{mo_lib};
+	}
+	
 	require Mo;
 	$args{name}       ||= 'My::Any::Mo';
 	$args{version}    ||= $Mo::VERSION;
 	$args{authority}  ||= $AUTHORITY;
 	$args{mo_lib}     ||= do { (my $path = $INC{'Mo.pm'}) =~ s/Mo.pm$//; $path };
-	$args{mo_modules} ||= [qw/build builder coerce default is required/];
+	$args{mo_modules} ||= [qw/build builder default is required/];
 	
-	$args{mo_modules} = [qw/build builder coerce default is isa required/]
+	$args{mo_modules} = [qw/build builder default is isa required/]
 		if $args{mo_modules}[0] eq 'STD';
 	
 	bless \%args, $class;
@@ -163,6 +169,7 @@ no warnings;
 our $Mo        = __PACKAGE__.'::Mo';
 our $AUTHORITY = '%AUTHORITY%';
 our $VERSION   = '%VERSION%';
+our $PREFERRED = undef;
 
 use Scalar::Util;
 use Carp;
@@ -184,21 +191,25 @@ sub import {
 }
 
 sub decide {
+	return $PREFERRED if $PREFERRED;
 	my ($self) = @_;
 	
-	{
-		local $_ = $ENV{PERL_ANY_MO};
-		if (/^MOOSE$/i) { $self->make_moose_available; return 'Moose' }
-		if (/^MOUSE$/i) { $self->make_mouse_available; return 'Mouse' }
-		if (/^MO$/i)    { $self->make_mo_available;    return $Mo }
-		if (/^${Mo}$/i) { $self->make_mo_available;    return $Mo }
-		if (/./)        { warn "PERL_ANY_MO should be Moose/Mouse/Mo!" }
-	}
+	$PREFERRED ||= $Any::Moose::PREFERRED
+		if $INC{'Any/Moose.pm'} && Any::Moose->any_moose;
 	
-	return 'Moose' if $self->moose_is_available;
-	return 'Mouse' if $self->mouse_is_available;
-	$self->make_mo_available;
-	return $Mo;
+	$PREFERRED ||= do {
+		local $_ = $ENV{PERL_ANY_MO};
+		if (/^MOOSE$/i)    { $self->make_moose_available; 'Moose' }
+		elsif (/^MOUSE$/i) { $self->make_mouse_available; 'Mouse' }
+		elsif (/^MO$/i)    { $self->make_mo_available;    $Mo }
+		elsif (/^${Mo}$/i) { $self->make_mo_available;    $Mo }
+		elsif (/./)        { warn "PERL_ANY_MO should be Moose/Mouse/Mo!"; undef }
+	};
+	
+	$PREFERRED ||= 'Moose' if $self->moose_is_available;
+	$PREFERRED ||= 'Mouse' if $self->mouse_is_available;
+	$self->make_mo_available and $PREFERRED ||= $Mo;
+	return $PREFERRED;
 }
 
 # Moose
@@ -209,7 +220,7 @@ sub moose_is_available {
 }
 sub make_moose_available {
 	return if (shift)->moose_is_available;
-	require Moose;
+	require Moose; 1
 }
 
 # Mouse
@@ -220,7 +231,7 @@ sub mouse_is_available {
 }
 sub make_mouse_available {
 	return if (shift)->mouse_is_available;
-	require Mouse;
+	require Mouse; 1
 }
 
 # Mo
